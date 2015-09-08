@@ -2,43 +2,104 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <variable name="movie" type="omdb.jenuine.com.omdbapi.Movie" />
+
+        <variable
+            name="movie"
+            type="omdb.jenuine.com.omdbapi.Movie" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:orientation="horizontal">
+
+
+        <FrameLayout
+            android:layout_width="160dp"
+            android:layout_height="160dp">
+            <ProgressBar
+                android:id="@+id/progress_circular"
+                style="?android:attr/progressBarStyleLargeInverse"
+                android:layout_width="40dp"
+                android:visibility="gone"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:indeterminateDrawable="@drawable/progress_smooth" />
+            <ImageView
+                android:id="@+id/poster"
+                android:layout_width="160dp"
+                android:layout_height="180dp"
+                android:src="@drawable/movie" />
+        </FrameLayout>
+
 
         <LinearLayout
             android:layout_width="0dip"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <TextView
+            <omdb.jenuine.com.omdbapi.Museo
                 style="@style/Base.TextAppearance.AppCompat.Large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{movie.Title}" />
 
-            <TextView
-                style="@style/Base.TextAppearance.AppCompat.Medium"
+            <omdb.jenuine.com.omdbapi.Museo
+                style="@style/Base.TextAppearance.AppCompat.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{movie.Language}" />
+
+            <omdb.jenuine.com.omdbapi.Museo
+                style="@style/Base.TextAppearance.AppCompat.Small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{movie.Year}" />
 
-            <TextView
+            <omdb.jenuine.com.omdbapi.Museo
+                style="@style/Base.TextAppearance.AppCompat.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{movie.Genre}" />
+
+            <omdb.jenuine.com.omdbapi.Museo
                 style="@style/Base.TextAppearance.AppCompat.Small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{movie.Runtime}" />
 
+            <omdb.jenuine.com.omdbapi.Museo
+                style="@style/Base.TextAppearance.AppCompat.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{movie.Director}" />
+
+            <omdb.jenuine.com.omdbapi.Museo
+                style="@style/Base.TextAppearance.AppCompat.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{movie.Actors}" />
+
+
+            <omdb.jenuine.com.omdbapi.Museo
+                style="@style/Base.TextAppearance.AppCompat.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{movie.Language}" />
+
+            <omdb.jenuine.com.omdbapi.Museo
+                style="@style/Base.TextAppearance.AppCompat.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{movie.imdbRating}" />
         </LinearLayout>
+
+
     </LinearLayout>
 
 </layout>

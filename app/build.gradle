@@ -3,7 +3,6 @@ apply plugin: 'com.android.databinding'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
-
     defaultConfig {
         applicationId "omdb.jenuine.com.omdbapi"
         minSdkVersion 21

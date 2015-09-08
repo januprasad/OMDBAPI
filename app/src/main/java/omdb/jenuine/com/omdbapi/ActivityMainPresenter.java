@@ -51,4 +51,5 @@ public class ActivityMainPresenter implements Observer<Movie> {
         this.view.addItem(movie);
     }
 
+
 }
