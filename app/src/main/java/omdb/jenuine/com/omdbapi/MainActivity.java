@@ -1,9 +1,10 @@
 package omdb.jenuine.com.omdbapi;
 
-import android.database.Cursor;
+import android.content.Intent;
 import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CursorAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import org.apache.commons.lang3.StringUtils;
 
 
 public class MainActivity extends BaseActivity implements MovieView<Movie>, SearchView.OnQueryTextListener {
@@ -43,12 +47,21 @@ public class MainActivity extends BaseActivity implements MovieView<Movie>, Sear
         adapter.setOnClickListener(new MovieAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getApplicationContext(), position + "", Toast.LENGTH_LONG).show();
+                ImageView poster = (ImageView) view.findViewById(R.id.poster);
+                launch(poster,position);
             }
         });
 
 
         progress_layout = (FrameLayout) findViewById(R.id.progress_layout);
+    }
+
+    private void launch(ImageView ivProfile, int position) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.EXTRA_IMDB_ID,adapter.getRepos().get(position).getImdbID());
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(this, (View) ivProfile, "profile");
+        startActivity(intent, options.toBundle());
     }
 
     @Override
@@ -63,7 +76,7 @@ public class MainActivity extends BaseActivity implements MovieView<Movie>, Sear
 
     private SimpleCursorAdapter suggestionsAdapter;
 
-    private static Movie[] MOVIES=new Movie[]{};
+    private static Movie[] MOVIES = new Movie[]{};
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
@@ -87,12 +100,12 @@ public class MainActivity extends BaseActivity implements MovieView<Movie>, Sear
             @Override
             public boolean onSuggestionClick(int position) {
                 // Your code here
-//                if(suggestionsAdapter!=null&&suggestionsAdapter.getItem(position)!=null)
-//
-//                else
-//                    presenter.getMovie(search.getQuery().toString());
                 MatrixCursor cursor = (MatrixCursor) suggestionsAdapter.getCursor();
-                Log.v("MainActivity",cursor.getCount()+"");
+                cursor.moveToPosition(position);
+                String title = cursor.getString(1);
+                Log.v("MainActivity", title + "");
+                 title = StringUtils.substringBefore(title, "(");
+                presenter.getMovie(title);
                 search.clearFocus();
                 progress_layout.setVisibility(View.VISIBLE);
                 return true;
@@ -101,10 +114,13 @@ public class MainActivity extends BaseActivity implements MovieView<Movie>, Sear
             @Override
             public boolean onSuggestionSelect(int position) {
                 // Your code here
-                if(suggestionsAdapter!=null&&suggestionsAdapter.getItem(position)!=null)
-                    presenter.getMovie(suggestionsAdapter.getItem(position).toString());
-                else
-                    presenter.getMovie(search.getQuery().toString());
+                MatrixCursor cursor = (MatrixCursor) suggestionsAdapter.getCursor();
+                cursor.moveToPosition(position);
+                String title = cursor.getString(1);
+                Log.v("MainActivity", title + "");
+                title = StringUtils.substringBefore(title, "(");
+                presenter.getMovie(title);
+
                 search.clearFocus();
                 progress_layout.setVisibility(View.VISIBLE);
                 return true;
@@ -136,7 +152,7 @@ public class MainActivity extends BaseActivity implements MovieView<Movie>, Sear
         // You must implements your logic to get data using OrmLite
         final MatrixCursor c = new MatrixCursor(new String[]{BaseColumns._ID, "movieTitle"});
         for (int i = 0; i < query.length; i++) {
-                c.addRow(new Object[]{i, query[i].getTitle()});
+            c.addRow(new Object[]{i, query[i].getTitle()+" ("+ query[i].getYear()+")"});
         }
         suggestionsAdapter.changeCursor(c);
     }
@@ -165,11 +181,13 @@ public class MainActivity extends BaseActivity implements MovieView<Movie>, Sear
         adapter.addItem(item);
         progress_layout.setVisibility(View.GONE);
     }
+
     @Override
     public void addItems(Movie[] items) {
-        MOVIES=items;
+        MOVIES = items;
         populateAdapter(items);
     }
+
     private void showToast(Movie item) {
         Toast.makeText(MainActivity.this, item + "", Toast.LENGTH_SHORT).show();
     }

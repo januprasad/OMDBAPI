@@ -37,7 +37,12 @@ public class ActivityMainPresenter implements Observer<Movie> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this);
     }
-
+    public void getMovieDetail(final String id) {
+        this.service.getMovieDetail(id, "full")
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this);
+    }
     @Override
     public void onCompleted() {
     }

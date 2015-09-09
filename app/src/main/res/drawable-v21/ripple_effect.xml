@@ -1,0 +1,6 @@
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/background_floating_material_dark"> <!-- ripple color -->
+
+    <item android:drawable="@drawable/textviewbg"/> <!-- normal color -->
+
+</ripple>

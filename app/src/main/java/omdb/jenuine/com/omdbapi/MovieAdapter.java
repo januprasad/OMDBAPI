@@ -28,6 +28,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         this.empty = empty;
     }
 
+    public List<Movie> getRepos() {
+        return repos;
+    }
+
     @Override
     public MovieAdapter.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -90,7 +94,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             super(view);
             this.binding = binding;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-//                mTextView.setBackgroundResource(R.drawable.ripple_effect);
+                view.setBackgroundResource(R.drawable.ripple_effect);
                 view.setOnClickListener(this);
             poster = (ImageView) view.findViewById(R.id.poster);
             progress_circular = (ProgressBar) view.findViewById(R.id.progress_circular);
