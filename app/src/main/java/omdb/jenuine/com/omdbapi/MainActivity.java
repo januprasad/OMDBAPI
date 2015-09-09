@@ -48,7 +48,7 @@ public class MainActivity extends BaseActivity implements MovieView<Movie>, Sear
             @Override
             public void onItemClick(View view, int position) {
                 ImageView poster = (ImageView) view.findViewById(R.id.poster);
-                launch(poster,position);
+                launch(poster, position);
             }
         });
 
@@ -58,10 +58,22 @@ public class MainActivity extends BaseActivity implements MovieView<Movie>, Sear
 
     private void launch(ImageView ivProfile, int position) {
         Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(DetailActivity.EXTRA_IMDB_ID,adapter.getRepos().get(position).getImdbID());
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(DetailActivity.EXTRA_IMDB_DATA, adapter.getRepos().get(position));
+        intent.putExtras(bundle);
         ActivityOptionsCompat options = ActivityOptionsCompat.
                 makeSceneTransitionAnimation(this, (View) ivProfile, "profile");
         startActivity(intent, options.toBundle());
+    }
+
+    private void launchWithMovie(Movie movie) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(DetailActivity.EXTRA_IMDB_DATA, movie);
+        intent.putExtras(bundle);
+//        ActivityOptionsCompat options = ActivityOptionsCompat.
+//                makeSceneTransitionAnimation(this, (View) ivProfile, "profile");
+        startActivity(intent);
     }
 
     @Override
@@ -104,10 +116,15 @@ public class MainActivity extends BaseActivity implements MovieView<Movie>, Sear
                 cursor.moveToPosition(position);
                 String title = cursor.getString(1);
                 Log.v("MainActivity", title + "");
-                 title = StringUtils.substringBefore(title, "(");
-                presenter.getMovie(title);
-                search.clearFocus();
-                progress_layout.setVisibility(View.VISIBLE);
+                title = StringUtils.substringBefore(title, "(");
+                Movie movie = adapter.getMovieByTitle(title);
+                if (movie != null) {
+                    launchWithMovie(movie);
+                } else {
+                    presenter.getMovie(title);
+                    search.clearFocus();
+                    progress_layout.setVisibility(View.VISIBLE);
+                }
                 return true;
             }
 
@@ -119,19 +136,30 @@ public class MainActivity extends BaseActivity implements MovieView<Movie>, Sear
                 String title = cursor.getString(1);
                 Log.v("MainActivity", title + "");
                 title = StringUtils.substringBefore(title, "(");
-                presenter.getMovie(title);
+                Movie movie = adapter.getMovieByTitle(title);
+                if (movie != null) {
+                    launchWithMovie(movie);
+                } else {
+                    title = StringUtils.substringBefore(title, "(");
+                    presenter.getMovie(title);
+                    search.clearFocus();
+                    progress_layout.setVisibility(View.VISIBLE);
+                }
 
-                search.clearFocus();
-                progress_layout.setVisibility(View.VISIBLE);
                 return true;
             }
         });
         this.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                presenter.getMovie(query);
-                search.clearFocus();
-                progress_layout.setVisibility(View.VISIBLE);
+                Movie movie = adapter.getMovieByTitle(query);
+                if (movie != null) {
+                    launchWithMovie(movie);
+                } else {
+                    presenter.getMovie(query);
+                    search.clearFocus();
+                    progress_layout.setVisibility(View.VISIBLE);
+                }
                 return false;
             }
 
@@ -152,7 +180,7 @@ public class MainActivity extends BaseActivity implements MovieView<Movie>, Sear
         // You must implements your logic to get data using OrmLite
         final MatrixCursor c = new MatrixCursor(new String[]{BaseColumns._ID, "movieTitle"});
         for (int i = 0; i < query.length; i++) {
-            c.addRow(new Object[]{i, query[i].getTitle()+" ("+ query[i].getYear()+")"});
+            c.addRow(new Object[]{i, query[i].getTitle() + " (" + query[i].getYear() + ")"});
         }
         suggestionsAdapter.changeCursor(c);
     }

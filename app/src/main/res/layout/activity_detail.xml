@@ -1,30 +1,135 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="omdb.jenuine.com.omdbapi.DetailActivity">
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <FrameLayout
-        android:layout_width="160dp"
-        android:layout_height="160dp">
-        <ProgressBar
-            android:id="@+id/progress_circular"
-            style="?android:attr/progressBarStyleLargeInverse"
-            android:layout_width="40dp"
-            android:visibility="gone"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:indeterminate="true"
-            android:indeterminateDrawable="@drawable/progress_smooth" />
-        <ImageView
-            android:id="@+id/poster"
-            android:layout_width="160dp"
-            android:transitionName="profile"
-            android:layout_height="180dp"
-            android:src="@drawable/movie" />
-    </FrameLayout>
+    <data>
+
+        <variable
+            name="movie"
+            type="omdb.jenuine.com.omdbapi.Movie" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="horizontal">
 
 
-</RelativeLayout>
+            <FrameLayout
+                android:layout_width="140dp"
+                android:layout_height="160dp"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp">
+
+                <ProgressBar
+                    android:id="@+id/progress_circular"
+                    style="?android:attr/progressBarStyleLargeInverse"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:indeterminate="true"
+                    android:indeterminateDrawable="@drawable/progress_smooth"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/poster"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/movie"
+                    android:transitionName="profile" />
+            </FrameLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp">
+
+                <omdb.jenuine.com.omdbapi.Museo
+                    style="@style/Base.TextAppearance.AppCompat.Large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{movie.Title}" />
+
+                <omdb.jenuine.com.omdbapi.Museo
+                    style="@style/Base.TextAppearance.AppCompat.Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{movie.Language}" />
+
+                <omdb.jenuine.com.omdbapi.Museo
+                    style="@style/Base.TextAppearance.AppCompat.Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{movie.Year}" />
+
+                <omdb.jenuine.com.omdbapi.Museo
+                    style="@style/Base.TextAppearance.AppCompat.Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{movie.Genre}" />
+
+                <omdb.jenuine.com.omdbapi.Museo
+                    style="@style/Base.TextAppearance.AppCompat.Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{movie.Runtime}" />
+
+                <omdb.jenuine.com.omdbapi.Museo
+                    style="@style/Base.TextAppearance.AppCompat.Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{movie.Director}" />
+
+                <omdb.jenuine.com.omdbapi.Museo
+                    style="@style/Base.TextAppearance.AppCompat.Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{movie.Actors}" />
+
+
+                <omdb.jenuine.com.omdbapi.Museo
+                    style="@style/Base.TextAppearance.AppCompat.Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{movie.Language}" />
+
+                <omdb.jenuine.com.omdbapi.Museo
+                    style="@style/Base.TextAppearance.AppCompat.Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{movie.imdbRating}" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <omdb.jenuine.com.omdbapi.Museo
+                    style="@style/Base.TextAppearance.AppCompat.Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{movie.Plot}" />
+            </ScrollView>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</layout>

@@ -1,11 +1,21 @@
 package omdb.jenuine.com.omdbapi;
 
 
+import java.io.Serializable;
+
 /**
  * Created by jenu on 4/9/15.
  */
-public class Movie {
-    public String Title, Year, Runtime, Genre, Poster,Director,Actors,Language,imdbRating,imdbID;
+public class Movie implements Serializable{
+    public String Title, Year, Runtime, Genre, Poster,Director,Actors,Language,imdbRating,imdbID,Plot;
+
+    public String getPlot() {
+        return Plot;
+    }
+
+    public void setPlot(String plot) {
+        Plot = plot;
+    }
 
     public String getTitle() {
         return Title;

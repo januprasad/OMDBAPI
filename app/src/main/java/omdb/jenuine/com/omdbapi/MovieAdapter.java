@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.support.annotation.UiThread;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.ProgressBar;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import omdb.jenuine.com.omdbapi.databinding.ListItemBinding;
@@ -30,6 +32,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     public List<Movie> getRepos() {
         return repos;
+    }
+
+    public Movie getMovieByTitle(String title) {
+
+
+        for (Movie movie : getRepos()) {
+            if (movie.getTitle().trim().equalsIgnoreCase(title.trim())) {
+                return movie;
+            }else{
+                Log.v("Equaling...",movie.getTitle()+" "+movie.getTitle().trim().equalsIgnoreCase(title.trim()));
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -95,7 +111,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             this.binding = binding;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 view.setBackgroundResource(R.drawable.ripple_effect);
-                view.setOnClickListener(this);
+            view.setOnClickListener(this);
             poster = (ImageView) view.findViewById(R.id.poster);
             progress_circular = (ProgressBar) view.findViewById(R.id.progress_circular);
         }
